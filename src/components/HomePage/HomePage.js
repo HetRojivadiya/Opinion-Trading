@@ -1,4 +1,5 @@
 import React from 'react';
+import BattingList from '../BattingList/BattingList';
 
 const HomePage = () => {
   return (
@@ -8,6 +9,7 @@ const HomePage = () => {
         <p className="mb-4">Trade opinions and insights with others!</p>
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Will Start Soon</button>
       </section>
+      <BattingList />
     </div>
   );
 };
