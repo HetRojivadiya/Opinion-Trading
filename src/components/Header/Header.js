@@ -5,14 +5,14 @@ import DownArrowIcon from "../../assets/Header/down-arrow.png";
 
 const Header = () => {
   return (
-    <header className="bg-blue-800 text-white p-4 flex items-center">
+    <header className=" fixed  min-w-full   bg-blue-800 text-white p-4 flex items-center">
       {/* Left Section */}
       <div className="flex items-center justify-start w-1/3">
         <h1 className="text-2xl md:text-2xl lg:text-3xl">Opinion Trading</h1>
       </div>
 
       {/* Center Section */}
-      <div className="flex items-center justify-center w-1/3">
+      <div className=" flex items-center  justify-end lg:justify-center w-1/3 ">
         <div className="bg-white space-x-3 rounded-lg p-2 flex items-center">
           <img src={WalletLogo} alt="Wallet Logo" className="h-8" />
           <div className="flex items-center">
