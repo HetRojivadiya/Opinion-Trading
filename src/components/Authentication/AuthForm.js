@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Logo from "../../assets/Logo/logo.jpg";
+import { useNavigate } from "react-router-dom";
+
 
 const AuthForm = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -7,6 +9,35 @@ const AuthForm = ({ onLogin }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // You would typically validate the token with a backend API call here.
+      fetch('http://localhost:3001/check-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Token is valid') {
+          navigate('/home'); // Redirect to home if the token is valid
+        } else {
+          localStorage.removeItem('token'); // Remove invalid token
+        }
+      })
+      .catch(error => {
+        console.error('Error validating token:', error);
+        localStorage.removeItem('token'); // Remove token on error
+      });
+    }
+  }, [navigate]);
+
 
   const validate = () => {
     const errors = {};
@@ -32,9 +63,9 @@ const AuthForm = ({ onLogin }) => {
         const data = await response.json();
 
         if (response.ok) {
-          onLogin(data.token); // Call onLogin callback to set token and update state
+          onLogin(data.token); 
         } else {
-          setErrors({ ...errors, form: data.message }); // Show error message
+          setErrors({ ...errors, form: data.message }); 
         }
       } catch (err) {
         console.error("Error during form submission:", err);
