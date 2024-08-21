@@ -1,9 +1,47 @@
-import React from 'react';
+import {React,useEffect} from 'react';
 import BattingList from '../BattingList/BattingList';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import ImageCarousel from '../HomePage/ImageCarousel'; // Import the carousel component
 
 const HomePage = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3001/check-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log('Token is valid', data);
+        } else {
+          console.error('Invalid token', data);
+          navigate('/');
+        }
+      } catch (err) {
+        console.error('Error verifying token:', err);
+        navigate('/');
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+
+
   return (
     <div className="p-2">
       <section className="bg-gray-900 p-6 rounded shadow-md text-white flex flex-col lg:flex-row items-center justify-between">
